@@ -20,7 +20,7 @@ return [
             ],
             'hash' => [
                 'type' => 'VARCHAR',
-                'length' => 250,
+                'length' => 190,
                 'attrs' => [
                     'unique' => true,
                     'null' => false 
