@@ -8,6 +8,7 @@
 namespace LibUserAuthCookie\Authorizer;
 
 use LibUserAuthCookie\Model\UserAuthCookie as UACookie;
+use LibEvent\Library\Event;
 
 class Cookie implements \LibUser\Iface\Authorizer
 {
@@ -84,6 +85,9 @@ class Cookie implements \LibUser\Iface\Authorizer
             'hash' => $result['token'],
             'expires' => date('Y-m-d H:i:s', (time()+$cookie_expires))
         ]);
+
+        if(module_exists('lib-event'))
+            Event::trigger('user:authorized', $identity);
 
         return $result;
     }
