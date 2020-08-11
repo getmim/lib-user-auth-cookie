@@ -2,7 +2,7 @@
 
 return [
     '__name' => 'lib-user-auth-cookie',
-    '__version' => '0.0.2',
+    '__version' => '0.0.4',
     '__git' => 'git@github.com:getmim/lib-user-auth-cookie.git',
     '__license' => 'MIT',
     '__author' => [
