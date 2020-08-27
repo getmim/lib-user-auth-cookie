@@ -13,6 +13,7 @@ use LibEvent\Library\Event;
 class Cookie implements \LibUser\Iface\Authorizer
 {
     private static $session;
+    private static $keep = true;
 
     static function getSession(): ?object{
         return self::$session;
@@ -56,14 +57,14 @@ class Cookie implements \LibUser\Iface\Authorizer
     }
 
     static function loginById(string $identity): ?array{
-        $config = \Mim::$app->config->libUserAuthCookie;
-        $cookie_name = $config->cookie;
+        $config         = \Mim::$app->config->libUserAuthCookie;
+        $cookie_name    = $config->cookie;
         $cookie_expires = $config->expires;
 
         $result = [
-            'name' => $cookie_name,
+            'name'    => $cookie_name,
             'expires' => $cookie_expires,
-            'token' => null
+            'token'   => null
         ];
 
         while(true){
@@ -78,11 +79,13 @@ class Cookie implements \LibUser\Iface\Authorizer
             break;
         }
 
+        if(!self::$keep)
+            $cookie_expires = 0;
         \Mim::$app->res->addCookie($cookie_name, $result['token'], $cookie_expires);
 
         UACookie::create([
-            'user' => $identity,
-            'hash' => $result['token'],
+            'user'    => $identity,
+            'hash'    => $result['token'],
             'expires' => date('Y-m-d H:i:s', (time()+$cookie_expires))
         ]);
 
@@ -102,5 +105,9 @@ class Cookie implements \LibUser\Iface\Authorizer
         $cookie_name = $config->cookie;
 
         \Mim::$app->res->addCookie($cookie_name, '', -1000);
+    }
+
+    static function setKeep(bool $keep): void{
+        self::$keep = $keep;
     }
 }

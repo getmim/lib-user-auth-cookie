@@ -46,3 +46,12 @@ $cookie = Cookie::loginById($user_id);
 Nilai yang dikembalikan oleh method `loginById` hanya sebagai referensi, cookie akan langsung
 di set oleh method ini dan akan diteruskan ke browser jika pada akhir eksekusi aplikasi menjalankan
 perintah `$this->res->send()`.
+
+## Method
+
+Selain method yang terimplement dari lib-user, module ini menambah method sebagai berikut:
+
+### setKeep(bool): void
+
+Menentukan apakan cookie akan di simpan terus-terusan atau akan expired ketika user close browser.
+Nilai default adalah `true`.
