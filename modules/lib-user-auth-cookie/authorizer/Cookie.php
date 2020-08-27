@@ -79,15 +79,15 @@ class Cookie implements \LibUser\Iface\Authorizer
             break;
         }
 
-        if(!self::$keep)
-            $cookie_expires = 0;
-        \Mim::$app->res->addCookie($cookie_name, $result['token'], $cookie_expires);
-
         UACookie::create([
             'user'    => $identity,
             'hash'    => $result['token'],
             'expires' => date('Y-m-d H:i:s', (time()+$cookie_expires))
         ]);
+
+        if(!self::$keep)
+            $cookie_expires = 0;
+        \Mim::$app->res->addCookie($cookie_name, $result['token'], $cookie_expires);
 
         if(module_exists('lib-event'))
             Event::trigger('user:authorized', $identity);
